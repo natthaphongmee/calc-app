@@ -13,8 +13,8 @@ function createWindow() {
         }
     })
 
-    // open devtools when start app.
-    win.webContents.openDevTools()
+    /* open devtools when start app. */
+    // win.webContents.openDevTools()
 
     win.loadFile('index.html')
 }
