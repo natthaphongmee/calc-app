@@ -1,21 +1,26 @@
 function cal(val) {
+    highlightOperator(val)
     let inputX = parseFloat(document.getElementById('inputX').value);
     let inputY = parseFloat(document.getElementById('inputY').value);
 
     let result;
     switch (val) {
-        case 'add': result = inputX + inputY
+        case 'add':
+            result = inputX + inputY
             break
-        case 'subtract': result = inputX - inputY
+        case 'subtract':
+            result = inputX - inputY
             break
-        case 'multiply': result = inputX * inputY
+        case 'multiply':
+            result = inputX * inputY
             break
-        case 'divide': result = inputX / inputY
+        case 'divide':
+            result = inputX / inputY
             break
-        case 'pow': result = Math.pow(inputX, inputY)
+        case 'pow':
+            result = Math.pow(inputX, inputY)
             break
     }
-
     document.querySelector('.operator').value = val
     if (!isNaN(result)) {
         document.querySelector('.display').value = result
@@ -64,6 +69,7 @@ function load() {
                 document.getElementById('inputY').value = parseFloat(data.data.inputY)
                 document.querySelector('.operator').value = data.data.optr
                 document.querySelector('.display').value = data.data.outcome
+                highlightOperator(data.data.optr)
             } else {
                 document.querySelector('.result_from_server').innerHTML = 'Load from cloud failed!'
             }
@@ -75,6 +81,47 @@ function load() {
             document.getElementById('inputY').value = parseFloat(data.inputY)
             document.querySelector('.operator').value = data.optr
             document.querySelector('.display').value = data.outcome
+            highlightOperator(data.optr)
         })
+    }
+}
+
+function highlightOperator(value) {
+    if ('add' === value) {
+        document.getElementById(value).style.borderColor = 'blue'
+        document.getElementById('subtract').style.borderColor = null
+        document.getElementById('multiply').style.borderColor = null
+        document.getElementById('divide').style.borderColor = null
+        document.getElementById('pow').style.borderColor = null
+    } else if ('subtract' === value) {
+        document.getElementById(value).style.borderColor = 'blue'
+        document.getElementById('add').style.borderColor = null
+        document.getElementById('multiply').style.borderColor = null
+        document.getElementById('divide').style.borderColor = null
+        document.getElementById('pow').style.borderColor = null
+    } else if ('multiply' === value) {
+        document.getElementById(value).style.borderColor = 'blue'
+        document.getElementById('add').style.borderColor = null
+        document.getElementById('subtract').style.borderColor = null
+        document.getElementById('divide').style.borderColor = null
+        document.getElementById('pow').style.borderColor = null
+    } else if ('divide' === value) {
+        document.getElementById(value).style.borderColor = 'blue'
+        document.getElementById('add').style.borderColor = null
+        document.getElementById('subtract').style.borderColor = null
+        document.getElementById('multiply').style.borderColor = null
+        document.getElementById('pow').style.borderColor = null
+    } else if ('pow' === value) {
+        document.getElementById(value).style.borderColor = 'yellow'
+        document.getElementById('add').style.borderColor = null
+        document.getElementById('subtract').style.borderColor = null
+        document.getElementById('multiply').style.borderColor = null
+        document.getElementById('divide').style.borderColor = null
+    } else {
+        document.getElementById('add').style.borderColor = null
+        document.getElementById('subtract').style.borderColor = null
+        document.getElementById('multiply').style.borderColor = null
+        document.getElementById('divide').style.borderColor = null
+        document.getElementById('pow').style.borderColor = null
     }
 }
