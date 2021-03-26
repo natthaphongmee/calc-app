@@ -3,17 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Calc App</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <script src='renderer.js'></script>
 </head>
 
 <body style="background: white;">
-    <h1>Hello World!</h1>
-    <p>
-        We are using Node.js <span id="node-version"></span>,
-        Chromium <span id="chrome-version"></span>,
-        and Electron <span id="electron-version"></span>.
-    </p>
+    Input X: <input type="number" name="inputX" id="inputX">
+    <br><br>
+    Input Y: <input type="number" name="inputY" id="inputY">
+    <br><br>
+    <div class="operator"></div>
+    <input type="button" value="+" onclick="cal('add')" />
+    <input type="button" value="-" onclick="cal('subtract')" />
+    <input type="button" value="x" onclick="cal('multiply')" />
+    <input type="button" value="/" onclick="cal('divide')" />
+    <input type="button" value="pow" onclick="cal('pow')" />
+    <br><br>
+    Result <input class="display" disabled></input>
+    <br><br>
+    <input type="checkbox" name="cloud" id="cloud">
+    <label for="cloud">Cloud Drive</label>
+    <br><br>
+    <input type="button" value="Load" onclick="load()" />
+    <input type="button" value="Save" onclick="save()" />
+    <br><br>
+    <div class="result_from_server"></div>
 </body>
 
 </html>
