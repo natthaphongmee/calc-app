@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
-const fetch = require('node-fetch');
+const fetch = require('node-fetch')
+const fs = require('fs')
 
 let win;
 function createWindow() {
@@ -51,7 +52,7 @@ ipcMain.on('cloudSave', async (event, arg) => {
         'status': status,
         'data': jsonData
     }
-    win.webContents.send("cloudSaveReturn", responseObj);
+    win.webContents.send('cloudSaveReturn', responseObj)
 })
 
 ipcMain.on('cloudLoad', async (event, arg) => {
@@ -64,5 +65,45 @@ ipcMain.on('cloudLoad', async (event, arg) => {
         'status': status,
         'data': jsonData
     }
-    win.webContents.send("cloudLoadReturn", responseObj);
+    win.webContents.send('cloudLoadReturn', responseObj)
+})
+
+ipcMain.on('localSave', async (event, arg) => {
+    event.preventDefault()
+
+    dialog.showSaveDialog({
+        title: 'Save File',
+        defaultPath: path.join(app.getAppPath(), 'sample'),
+        filters: [{ name: 'Json File', extensions: ['json'] }],
+        properties: []
+    }).then(file => {
+        if (!file.canceled) {
+            fs.writeFile(file.filePath.toString(),
+                arg, function (err) {
+                    if (err) throw err;
+                    win.webContents.send('localSaveReturn', 'File save successfully!')
+                });
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+})
+
+ipcMain.on('localLoad', async (event, arg) => {
+    event.preventDefault()
+
+    dialog.showOpenDialog({
+        title: 'Upload File',
+        filters: [{ name: 'Json File', extensions: ['json'] }],
+        properties: ['openFile']
+    }).then(file => {
+        if (!file.canceled) {
+            fs.readFile(file.filePaths[0], (err, data) => {
+                if (err) throw err
+                win.webContents.send('localLoadReturn', JSON.parse(data))
+            })
+        }
+    }).catch(err => {
+        console.log(err)
+    })
 })

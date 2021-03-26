@@ -46,7 +46,10 @@ function save() {
             }
         });
     } else {
-        console.log('download file!')
+        window.api.sendToMain('localSave', JSON.stringify(data))
+        window.api.receiveFromMain('localSaveReturn', (data) => {
+            document.querySelector('.result_from_server').innerHTML = data
+        })
     }
 }
 
@@ -66,6 +69,12 @@ function load() {
             }
         });
     } else {
-        console.log('upload file from local!')
+        window.api.sendToMain('localLoad', null)
+        window.api.receiveFromMain('localLoadReturn', (data) => {
+            document.getElementById('inputX').value = parseFloat(data.inputX)
+            document.getElementById('inputY').value = parseFloat(data.inputY)
+            document.querySelector('.operator').value = data.optr
+            document.querySelector('.display').value = data.outcome
+        })
     }
 }
